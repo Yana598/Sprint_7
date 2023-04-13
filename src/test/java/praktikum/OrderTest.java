@@ -2,13 +2,17 @@ package praktikum;
 
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
+import org.hamcrest.MatcherAssert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import praktikum.order.Order;
 import praktikum.order.OrderCheck;
+import praktikum.order.OrdersList;
 
+import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
@@ -60,6 +64,13 @@ public class OrderTest {
 
         assertEquals("Не приходит список заказов в ответ",
                 HttpStatus.SC_OK, responseList.extract().statusCode());
+
+    }
+
+    @Test
+    public void checkListOrder(){
+        OrdersList ordersList = given().get("api/v1/orders").body().as(OrdersList.class);
+        MatcherAssert.assertThat(ordersList, notNullValue());
 
     }
 

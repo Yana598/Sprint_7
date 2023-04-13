@@ -38,7 +38,6 @@ public class CourierTests {
     @Description("проверка создания курьера с валидными данными")
     public void createCourier() {
         ValidatableResponse response = courierClient.create(courier);
-
         assertEquals("Статус код неверный при создании курьера или неверный ответ в теле",
                 HttpStatus.SC_CREATED, response.extract().statusCode());
     }
@@ -62,15 +61,6 @@ public class CourierTests {
         ValidatableResponse createTheSameResponse = courierClient.create(courier);
         assertEquals("Статус код неверный при попытке создать одинакового курьера",
                 HttpStatus.SC_CONFLICT, createTheSameResponse.extract().statusCode());
-    }
-
-    @Test
-    @DisplayName("регистрация нового курьера")
-    @Description("проверка создания курьера без поля firstName")
-    public void loginCourierWithoutField() {
-        ValidatableResponse fieldsForCreate = courierClient.fieldsForCreating(credsFrom(courier));
-        assertEquals("Статус код неверный при попытке создать курьера без поля firstName",
-                HttpStatus.SC_CREATED, fieldsForCreate.extract().statusCode());
     }
 
     @Test

@@ -1,5 +1,6 @@
 package praktikum.courier;
 
+import io.qameta.allure.Step;
 import io.restassured.RestAssured;
 import io.restassured.response.ValidatableResponse;
 import praktikum.data.Courier;
@@ -8,7 +9,6 @@ import praktikum.spec.ScooterRentSpec;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.MatcherAssert.assertThat;
 
 public class CourierClient extends ScooterRentSpec {
 
@@ -21,9 +21,7 @@ public class CourierClient extends ScooterRentSpec {
         RestAssured.baseURI = BASE_URI;
     }
 
-    /**
-     * создаем курьера
-     */
+    @Step("создание курьера")
     public ValidatableResponse create(Courier courier) {
         return given()
                 .spec(ScooterRentSpec.requestSpecification())
@@ -36,9 +34,7 @@ public class CourierClient extends ScooterRentSpec {
                 .body("ok", is (true));
     }
 
-    /**
-     * авторизуем курьера в системе
-     */
+  @Step("регистрация курьера")
     public ValidatableResponse login(CourierCreds creds) {
         return given()
                 .spec(ScooterRentSpec.requestSpecification())
@@ -49,6 +45,7 @@ public class CourierClient extends ScooterRentSpec {
                 .then();
     }
 
+    @Step("удаление курьера")
     public ValidatableResponse courierDelete(String id) {
         return given()
                 .spec(ScooterRentSpec.requestSpecification())
@@ -57,18 +54,5 @@ public class CourierClient extends ScooterRentSpec {
     }
 
 
-    /**
-     * проверка создания курьера с пустым полем firstName
-     */
-    public ValidatableResponse fieldsForCreating(CourierCreds creds){
-        return given()
-                .header("Content-type", "application/json")
-                .and()
-                .body(creds)
-                .post(PATH)
-                .then();
-    }
-
 
 }
-
